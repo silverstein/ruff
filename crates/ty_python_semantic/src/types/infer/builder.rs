@@ -2209,6 +2209,7 @@ impl<'db, 'ast> TypeInferenceBuilder<'db, 'ast> {
             | Type::AlwaysFalsy
             | Type::TypeIs(_)
             | Type::TypeGuard(_)
+            | Type::TypedDictTop
             | Type::TypedDict(_)
             | Type::NewTypeInstance(_) => {
                 // We may infer the value type multiple times with distinct type context during
@@ -2761,7 +2762,8 @@ impl<'db, 'ast> TypeInferenceBuilder<'db, 'ast> {
                 | Type::Divergent(_)
                 | Type::Never
                 | Type::ModuleLiteral(..)
-                | Type::BoundSuper(..) => return None,
+                | Type::BoundSuper(..)
+                | Type::TypedDictTop => return None,
             })
         } else {
             None
@@ -4892,6 +4894,7 @@ impl<'db, 'ast> TypeInferenceBuilder<'db, 'ast> {
                 | Type::BoundSuper(_)
                 | Type::TypeIs(_)
                 | Type::TypeGuard(_)
+                | Type::TypedDictTop
                 | Type::TypedDict(_)
                 | Type::NewTypeInstance(_) => None,
             }
@@ -8862,6 +8865,7 @@ impl<'db, 'ast> TypeInferenceBuilder<'db, 'ast> {
                 | Type::BoundSuper(_)
                 | Type::TypeIs(_)
                 | Type::TypeGuard(_)
+                | Type::TypedDictTop
                 | Type::TypedDict(_)
                 | Type::NewTypeInstance(_),
             ) => fallback_unary_expression_type(),
