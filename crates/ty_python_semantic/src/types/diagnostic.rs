@@ -3655,7 +3655,7 @@ pub(super) fn report_invalid_assignment<'db>(
             value_ty.display(context.db()),
         ));
 
-        for message in error_context.messages() {
+        for message in error_context.info_messages() {
             diag.info(message);
         }
 
