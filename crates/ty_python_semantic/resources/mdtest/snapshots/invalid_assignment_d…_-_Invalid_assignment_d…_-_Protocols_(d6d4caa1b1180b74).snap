@@ -58,6 +58,8 @@ error[invalid-assignment]: Object of type `CheckWithWrongSignature` is not assig
    |             |
    |             Declared type
    |
+info: type `str` is not assignable to `bytes`
+info: └── while comparing parameter types
 info: rule `invalid-assignment` is enabled by default
 
 ```
