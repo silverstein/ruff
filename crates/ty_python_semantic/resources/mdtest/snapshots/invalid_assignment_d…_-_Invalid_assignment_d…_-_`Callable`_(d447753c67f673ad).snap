@@ -46,6 +46,7 @@ error[invalid-assignment]: Object of type `def source(x: int, y: str) -> None` i
 7 | def _(source: Callable[[int, str], bool]):
 8 |     target: Callable[[int, bytes], bool] = source  # error: [invalid-assignment]
   |
+info: incompatible return types `None` and `bool`
 info: rule `invalid-assignment` is enabled by default
 
 ```
@@ -80,6 +81,7 @@ error[invalid-assignment]: Object of type `(int, bytes, /) -> None` is not assig
 11 | def _(source: Callable[[int, str], bool]):
 12 |     target: Callable[[int], bool] = source  # error: [invalid-assignment]
    |
+info: incompatible return types `None` and `bool`
 info: rule `invalid-assignment` is enabled by default
 
 ```
