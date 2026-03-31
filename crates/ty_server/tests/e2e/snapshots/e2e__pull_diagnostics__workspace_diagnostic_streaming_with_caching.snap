@@ -67,7 +67,7 @@ expression: all_items
                         source: Some(
                             "ty",
                         ),
-                        message: "Name `true` used when not defined",
+                        message: "Name `true` used when not defined/ninfo: rule `unresolved-reference` is enabled by default",
                         related_information: None,
                         tags: None,
                         data: None,
@@ -140,7 +140,7 @@ expression: all_items
                         source: Some(
                             "ty",
                         ),
-                        message: "Name `true` used when not defined",
+                        message: "Name `true` used when not defined/ninfo: rule `unresolved-reference` is enabled by default",
                         related_information: None,
                         tags: None,
                         data: None,
@@ -213,7 +213,7 @@ expression: all_items
                         source: Some(
                             "ty",
                         ),
-                        message: "Name `true` used when not defined",
+                        message: "Name `true` used when not defined/ninfo: rule `unresolved-reference` is enabled by default",
                         related_information: None,
                         tags: None,
                         data: None,

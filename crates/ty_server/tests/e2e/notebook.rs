@@ -244,7 +244,7 @@ fn swap_cells() -> anyhow::Result<()> {
             "href": "https://ty.dev/rules#unresolved-reference"
           },
           "source": "ty",
-          "message": "Name `a` used when not defined"
+          "message": "Name `a` used when not defined/ninfo: rule `unresolved-reference` is enabled by default"
         }
       ],
       "vscode-notebook-cell://src/test.ipynb#1": [],

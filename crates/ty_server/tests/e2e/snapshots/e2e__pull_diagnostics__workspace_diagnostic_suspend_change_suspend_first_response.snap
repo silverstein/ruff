@@ -69,7 +69,7 @@ Report(
                                 source: Some(
                                     "ty",
                                 ),
-                                message: "Return type does not match returned value: expected `str`, found `Literal[42]`",
+                                message: "Return type does not match returned value: expected `str`, found `Literal[42]`/ninfo: rule `invalid-return-type` is enabled by default",
                                 related_information: None,
                                 tags: None,
                                 data: None,

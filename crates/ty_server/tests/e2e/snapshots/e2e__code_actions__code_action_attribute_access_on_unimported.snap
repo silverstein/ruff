@@ -24,7 +24,7 @@ expression: code_actions
           "href": "https://ty.dev/rules#unresolved-reference"
         },
         "source": "ty",
-        "message": "Name `typing` used when not defined"
+        "message": "Name `typing` used when not defined/ninfo: rule `unresolved-reference` is enabled by default"
       }
     ],
     "edit": {
@@ -69,7 +69,7 @@ expression: code_actions
           "href": "https://ty.dev/rules#unresolved-reference"
         },
         "source": "ty",
-        "message": "Name `typing` used when not defined"
+        "message": "Name `typing` used when not defined/ninfo: rule `unresolved-reference` is enabled by default"
       }
     ],
     "edit": {

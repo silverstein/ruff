@@ -22,7 +22,7 @@ expression: diagnostics
         "href": "https://ty.dev/rules#invalid-return-type"
       },
       "source": "ty",
-      "message": "Function can implicitly return `None`, which is not assignable to return type `str`"
+      "message": "Function can implicitly return `None`, which is not assignable to return type `str`/ninfo: rule `invalid-return-type` is enabled by default"
     }
   ],
   "vscode-notebook-cell://test.ipynb#2": [
@@ -59,7 +59,7 @@ expression: diagnostics
         "href": "https://ty.dev/rules#unresolved-reference"
       },
       "source": "ty",
-      "message": "Name `word` used when not defined"
+      "message": "Name `word` used when not defined/ninfo: rule `unresolved-reference` is enabled by default"
     },
     {
       "range": {
@@ -94,7 +94,7 @@ expression: diagnostics
         "href": "https://ty.dev/rules#invalid-argument-type"
       },
       "source": "ty",
-      "message": "Argument to function `with_style` is incorrect: Expected `Style`, found `Literal[/", /"]`"
+      "message": "Argument to function `with_style` is incorrect: Expected `Style`, found `Literal[/", /"]`/ninfo: rule `invalid-argument-type` is enabled by default"
     },
     {
       "range": {
@@ -129,7 +129,7 @@ expression: diagnostics
         "href": "https://ty.dev/rules#unresolved-reference"
       },
       "source": "ty",
-      "message": "Name `underline` used when not defined"
+      "message": "Name `underline` used when not defined/ninfo: rule `unresolved-reference` is enabled by default"
     },
     {
       "range": {
@@ -148,7 +148,7 @@ expression: diagnostics
         "href": "https://ty.dev/rules#too-many-positional-arguments"
       },
       "source": "ty",
-      "message": "Too many positional arguments to function `with_style`: expected 3, got 6"
+      "message": "Too many positional arguments to function `with_style`: expected 3, got 6/ninfo: rule `too-many-positional-arguments` is enabled by default"
     },
     {
       "range": {

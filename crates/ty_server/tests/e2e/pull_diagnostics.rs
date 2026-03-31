@@ -1125,7 +1125,10 @@ def foo() -> str:
     let diagnostics_before = server.document_diagnostic_request(main_path, None);
     insta::assert_snapshot!(
         condensed_document_diagnostic_snapshot(diagnostics_before),
-        @"1:11..1:13[ERROR]: Return type does not match returned value: expected `str`, found `Literal[42]`",
+        @"
+    1:11..1:13[ERROR]: Return type does not match returned value: expected `str`, found `Literal[42]`
+    info: rule `invalid-return-type` is enabled by default
+    ",
     );
 
     // Open an "external" file, e.g., this is what happens
@@ -1145,7 +1148,10 @@ def foo() -> str:
     let diagnostics_after = server.document_diagnostic_request(main_path, None);
     insta::assert_snapshot!(
         condensed_document_diagnostic_snapshot(diagnostics_after),
-        @"1:11..1:13[ERROR]: Return type does not match returned value: expected `str`, found `Literal[42]`",
+        @"
+    1:11..1:13[ERROR]: Return type does not match returned value: expected `str`, found `Literal[42]`
+    info: rule `invalid-return-type` is enabled by default
+    ",
     );
 
     Ok(())

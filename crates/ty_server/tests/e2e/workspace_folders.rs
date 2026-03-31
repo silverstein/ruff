@@ -35,11 +35,13 @@ fn initialize_multiple_workspace_folders() -> Result<()> {
 
     let workspace_diagnostics = server.workspace_diagnostic_request(None, None);
     assert_snapshot!(
-        condensed_workspace_diagnostic_snapshot(workspace_diagnostics), @r"
+        condensed_workspace_diagnostic_snapshot(workspace_diagnostics), @"
     file://<temp_dir>/root1/main.py
     	0:0..0:14[ERROR]: Name `does_not_exist` used when not defined
+    info: rule `unresolved-reference` is enabled by default
     file://<temp_dir>/root2/main.py
     	0:0..0:14[ERROR]: Name `does_not_exist` used when not defined
+    info: rule `unresolved-reference` is enabled by default
     "
     );
 
@@ -66,9 +68,10 @@ fn add_workspace_folder_after_init() -> Result<()> {
     // don't see `root2/main.py`.
     let workspace_diagnostics = server.workspace_diagnostic_request(None, None);
     assert_snapshot!(
-        condensed_workspace_diagnostic_snapshot(workspace_diagnostics), @r"
+        condensed_workspace_diagnostic_snapshot(workspace_diagnostics), @"
     file://<temp_dir>/root1/main.py
     	0:0..0:14[ERROR]: Name `does_not_exist` used when not defined
+    info: rule `unresolved-reference` is enabled by default
     "
     );
 
@@ -78,11 +81,13 @@ fn add_workspace_folder_after_init() -> Result<()> {
 
     let workspace_diagnostics = server.workspace_diagnostic_request(None, None);
     assert_snapshot!(
-        condensed_workspace_diagnostic_snapshot(workspace_diagnostics), @r"
+        condensed_workspace_diagnostic_snapshot(workspace_diagnostics), @"
     file://<temp_dir>/root1/main.py
     	0:0..0:14[ERROR]: Name `does_not_exist` used when not defined
+    info: rule `unresolved-reference` is enabled by default
     file://<temp_dir>/root2/main.py
     	0:0..0:14[ERROR]: Name `does_not_exist` used when not defined
+    info: rule `unresolved-reference` is enabled by default
     "
     );
 
@@ -110,9 +115,10 @@ fn add_multiple_workspace_folders() -> Result<()> {
     // don't see `root2/main.py` or `root3/main.py`.
     let workspace_diagnostics = server.workspace_diagnostic_request(None, None);
     assert_snapshot!(
-        condensed_workspace_diagnostic_snapshot(workspace_diagnostics), @r"
+        condensed_workspace_diagnostic_snapshot(workspace_diagnostics), @"
     file://<temp_dir>/root1/main.py
     	0:0..0:14[ERROR]: Name `does_not_exist` used when not defined
+    info: rule `unresolved-reference` is enabled by default
     "
     );
 
@@ -123,13 +129,16 @@ fn add_multiple_workspace_folders() -> Result<()> {
 
     let workspace_diagnostics = server.workspace_diagnostic_request(None, None);
     assert_snapshot!(
-        condensed_workspace_diagnostic_snapshot(workspace_diagnostics), @r"
+        condensed_workspace_diagnostic_snapshot(workspace_diagnostics), @"
     file://<temp_dir>/root1/main.py
     	0:0..0:14[ERROR]: Name `does_not_exist` used when not defined
+    info: rule `unresolved-reference` is enabled by default
     file://<temp_dir>/root2/main.py
     	0:0..0:14[ERROR]: Name `does_not_exist` used when not defined
+    info: rule `unresolved-reference` is enabled by default
     file://<temp_dir>/root3/main.py
     	0:0..0:14[ERROR]: Name `does_not_exist` used when not defined
+    info: rule `unresolved-reference` is enabled by default
     "
     );
 
@@ -157,11 +166,13 @@ fn remove_workspace_folder_after_init() -> Result<()> {
     // initially.
     let workspace_diagnostics = server.workspace_diagnostic_request(None, None);
     assert_snapshot!(
-        condensed_workspace_diagnostic_snapshot(workspace_diagnostics), @r"
+        condensed_workspace_diagnostic_snapshot(workspace_diagnostics), @"
     file://<temp_dir>/root1/main.py
     	0:0..0:14[ERROR]: Name `does_not_exist` used when not defined
+    info: rule `unresolved-reference` is enabled by default
     file://<temp_dir>/root2/main.py
     	0:0..0:14[ERROR]: Name `does_not_exist` used when not defined
+    info: rule `unresolved-reference` is enabled by default
     "
     );
 
@@ -175,9 +186,10 @@ fn remove_workspace_folder_after_init() -> Result<()> {
 
     let workspace_diagnostics = server.workspace_diagnostic_request(None, None);
     assert_snapshot!(
-        condensed_workspace_diagnostic_snapshot(workspace_diagnostics), @r"
+        condensed_workspace_diagnostic_snapshot(workspace_diagnostics), @"
     file://<temp_dir>/root1/main.py
     	0:0..0:14[ERROR]: Name `does_not_exist` used when not defined
+    info: rule `unresolved-reference` is enabled by default
     "
     );
 
@@ -207,13 +219,16 @@ fn remove_multiple_workspace_folders() -> Result<()> {
     // initially.
     let workspace_diagnostics = server.workspace_diagnostic_request(None, None);
     assert_snapshot!(
-        condensed_workspace_diagnostic_snapshot(workspace_diagnostics), @r"
+        condensed_workspace_diagnostic_snapshot(workspace_diagnostics), @"
     file://<temp_dir>/root1/main.py
     	0:0..0:14[ERROR]: Name `does_not_exist` used when not defined
+    info: rule `unresolved-reference` is enabled by default
     file://<temp_dir>/root2/main.py
     	0:0..0:14[ERROR]: Name `does_not_exist` used when not defined
+    info: rule `unresolved-reference` is enabled by default
     file://<temp_dir>/root3/main.py
     	0:0..0:14[ERROR]: Name `does_not_exist` used when not defined
+    info: rule `unresolved-reference` is enabled by default
     "
     );
 
@@ -227,9 +242,10 @@ fn remove_multiple_workspace_folders() -> Result<()> {
 
     let workspace_diagnostics = server.workspace_diagnostic_request(None, None);
     assert_snapshot!(
-        condensed_workspace_diagnostic_snapshot(workspace_diagnostics), @r"
+        condensed_workspace_diagnostic_snapshot(workspace_diagnostics), @"
     file://<temp_dir>/root1/main.py
     	0:0..0:14[ERROR]: Name `does_not_exist` used when not defined
+    info: rule `unresolved-reference` is enabled by default
     "
     );
 
@@ -261,7 +277,10 @@ fn remove_workspace_folder_with_open_document() -> Result<()> {
     let document_diagnostics = server.document_diagnostic_request(&main1, None);
     assert_snapshot!(
         condensed_document_diagnostic_snapshot(document_diagnostics),
-        @"0:0..0:15[ERROR]: Name `does_not_exist1` used when not defined",
+        @"
+    0:0..0:15[ERROR]: Name `does_not_exist1` used when not defined
+    info: rule `unresolved-reference` is enabled by default
+    ",
     );
 
     server.open_text_document(&main2, main2_content, 1);
@@ -269,7 +288,10 @@ fn remove_workspace_folder_with_open_document() -> Result<()> {
     let document_diagnostics = server.document_diagnostic_request(&main2, None);
     assert_snapshot!(
         condensed_document_diagnostic_snapshot(document_diagnostics),
-        @"0:0..0:15[ERROR]: Name `does_not_exist2` used when not defined",
+        @"
+    0:0..0:15[ERROR]: Name `does_not_exist2` used when not defined
+    info: rule `unresolved-reference` is enabled by default
+    ",
     );
 
     server.change_workspace_folders([], [root2]);
@@ -278,7 +300,10 @@ fn remove_workspace_folder_with_open_document() -> Result<()> {
     let document_diagnostics = server.document_diagnostic_request(&main1, None);
     assert_snapshot!(
         condensed_document_diagnostic_snapshot(document_diagnostics),
-        @"0:0..0:15[ERROR]: Name `does_not_exist1` used when not defined",
+        @"
+    0:0..0:15[ERROR]: Name `does_not_exist1` used when not defined
+    info: rule `unresolved-reference` is enabled by default
+    ",
     );
 
     let document_diagnostics = server.document_diagnostic_request(&main2, None);
@@ -312,11 +337,13 @@ fn add_and_remove_workspace_folders() -> Result<()> {
     // don't see `root3/main.py`.
     let workspace_diagnostics = server.workspace_diagnostic_request(None, None);
     assert_snapshot!(
-        condensed_workspace_diagnostic_snapshot(workspace_diagnostics), @r"
+        condensed_workspace_diagnostic_snapshot(workspace_diagnostics), @"
     file://<temp_dir>/root1/main.py
     	0:0..0:14[ERROR]: Name `does_not_exist` used when not defined
+    info: rule `unresolved-reference` is enabled by default
     file://<temp_dir>/root2/main.py
     	0:0..0:14[ERROR]: Name `does_not_exist` used when not defined
+    info: rule `unresolved-reference` is enabled by default
     "
     );
 
@@ -328,11 +355,13 @@ fn add_and_remove_workspace_folders() -> Result<()> {
 
     let workspace_diagnostics = server.workspace_diagnostic_request(None, None);
     assert_snapshot!(
-        condensed_workspace_diagnostic_snapshot(workspace_diagnostics), @r"
+        condensed_workspace_diagnostic_snapshot(workspace_diagnostics), @"
     file://<temp_dir>/root1/main.py
     	0:0..0:14[ERROR]: Name `does_not_exist` used when not defined
+    info: rule `unresolved-reference` is enabled by default
     file://<temp_dir>/root3/main.py
     	0:0..0:14[ERROR]: Name `does_not_exist` used when not defined
+    info: rule `unresolved-reference` is enabled by default
     "
     );
 
@@ -365,9 +394,10 @@ fn add_existing_workspace_folder_is_no_op() -> Result<()> {
 
     let workspace_diagnostics = server.workspace_diagnostic_request(None, None);
     assert_snapshot!(
-        condensed_workspace_diagnostic_snapshot(workspace_diagnostics), @r"
+        condensed_workspace_diagnostic_snapshot(workspace_diagnostics), @"
     file://<temp_dir>/root1/main.py
     	0:0..0:14[ERROR]: Name `does_not_exist` used when not defined
+    info: rule `unresolved-reference` is enabled by default
     "
     );
 

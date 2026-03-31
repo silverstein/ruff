@@ -23,7 +23,7 @@ expression: diagnostics
         "href": "https://ty.dev/rules#unresolved-reference"
       },
       "source": "ty",
-      "message": "Name `a` used when not defined"
+      "message": "Name `a` used when not defined/ninfo: rule `unresolved-reference` was selected in the editor settings"
     }
   ]
 }
