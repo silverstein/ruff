@@ -49,6 +49,7 @@ error[invalid-method-override]: Invalid override of method `method`
  3 |
  4 | class Sub1(Super):
    |
+info: incompatible return types `object` and `int`
 info: This violates the Liskov Substitution Principle
 info: rule `invalid-method-override` is enabled by default
 
@@ -70,6 +71,7 @@ error[invalid-method-override]: Invalid override of method `method`
  3 |
  4 | class Sub1(Super):
    |
+info: incompatible return types `str` and `int`
 info: This violates the Liskov Substitution Principle
 info: rule `invalid-method-override` is enabled by default
 

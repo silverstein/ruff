@@ -102,6 +102,7 @@ error[invalid-method-override]: Invalid override of method `method`
 8 |
 9 | class Child(Parent):
   |
+info: incompatible parameter types `str` and `int`
 info: This violates the Liskov Substitution Principle
 info: rule `invalid-method-override` is enabled by default
 
@@ -126,6 +127,7 @@ error[invalid-method-override]: Invalid override of method `method`
  8 |
  9 | class Child(Parent):
    |
+info: incompatible parameter types `int` and `str`
 info: This violates the Liskov Substitution Principle
 info: rule `invalid-method-override` is enabled by default
 
@@ -150,6 +152,7 @@ error[invalid-method-override]: Invalid override of method `method`
  8 |
  9 | class Child(Parent):
    |
+info: incompatible parameter types `bytes` and `str`
 info: This violates the Liskov Substitution Principle
 info: rule `invalid-method-override` is enabled by default
 
@@ -169,6 +172,7 @@ error[invalid-method-override]: Invalid override of method `method`
 29 |
 30 | class ChildWithReturnType(ParentWithReturnType):
    |
+info: incompatible return types `str` and `int`
 info: This violates the Liskov Substitution Principle
 info: rule `invalid-method-override` is enabled by default
 
@@ -190,6 +194,7 @@ error[invalid-method-override]: Invalid override of method `method`
 34 |
 35 | class GradualParent(Grandparent):
    |
+info: incompatible return types `int` and `str`
 info: This violates the Liskov Substitution Principle
 info: rule `invalid-method-override` is enabled by default
 
@@ -212,6 +217,7 @@ error[invalid-method-override]: Invalid override of method `method`
  5 |
  6 | class Parent(Grandparent):
    |
+info: incompatible parameter types `str` and `int`
 info: This violates the Liskov Substitution Principle
 info: rule `invalid-method-override` is enabled by default
 
