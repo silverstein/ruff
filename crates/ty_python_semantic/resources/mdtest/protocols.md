@@ -3314,6 +3314,82 @@ def f(c: C[int]) -> None:
     takes_c(c)
 ```
 
+### Recursive generic protocols with multiple growing self-type wrappers
+
+This regression test covers <https://github.com/astral-sh/ty/issues/3208>. Unlike issue #1736, the
+recursion alternates between different wrappers rather than repeating the same one, so we still need
+specialization-time recursion guards to stop growth like `Factory[Tagged[Wrapped[Tagged[...]]]]`.
+
+```toml
+[environment]
+python-version = "3.12"
+```
+
+`pkg/__init__.py`:
+
+```py
+```
+
+`pkg/base.py`:
+
+```py
+from abc import ABC, abstractmethod
+from dataclasses import dataclass
+from typing import Protocol
+
+class Base[I, O](ABC):
+    @abstractmethod
+    async def run(self, input: I) -> O: ...
+
+class BaseFactory[I, O](Protocol):
+    async def create(self) -> Base[I, O]: ...
+
+@dataclass(frozen=True)
+class Tagged[T, U, V]:
+    value: T
+
+@dataclass(frozen=True)
+class Wrapped[T]:
+    inner: T
+```
+
+`pkg/config.py`:
+
+```py
+from typing import Protocol
+
+from pkg.base import Base, BaseFactory, Tagged, Wrapped
+
+class Impl[I, O](Base[I, O]):
+    async def run(self, input: I) -> O:
+        raise NotImplementedError
+
+class Factory[I, O](BaseFactory[I, O], Protocol):
+    async def create(self) -> Impl[I, O]: ...
+    def tag[U, V](self) -> "Factory[Tagged[I, U, V], O]":
+        from pkg.wrapper import TaggedFactory
+
+        return TaggedFactory(inner=self)
+
+    def wrap(self) -> "Factory[Wrapped[I], O]": ...
+```
+
+`pkg/wrapper.py`:
+
+```py
+from dataclasses import dataclass
+
+from pkg.base import Tagged
+from pkg.config import Factory, Impl
+
+@dataclass
+class TaggedFactory[I, O, U, V](Factory["Tagged[I, U, V]", O]):
+    inner: Factory[I, O]
+
+    async def create(self) -> Impl["Tagged[I, U, V]", O]:
+        raise NotImplementedError
+```
+
 ### Recursive legacy generic protocol
 
 ```py

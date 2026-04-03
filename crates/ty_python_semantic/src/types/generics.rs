@@ -18,7 +18,8 @@ use crate::types::constraints::{
     ConstraintSet, ConstraintSetBuilder, IteratorConstraintsExtension, PathBounds, Solutions,
 };
 use crate::types::relation::{
-    DisjointnessChecker, HasRelationToVisitor, IsDisjointVisitor, TypeRelation, TypeRelationChecker,
+    DisjointnessChecker, HasRelationToVisitor, IsDisjointVisitor, ProtocolRelationVisitor,
+    TypeRelation, TypeRelationChecker,
 };
 use crate::types::signatures::{CallableSignature, Parameters};
 use crate::types::tuple::{TupleSpec, TupleType, walk_tuple_type};
@@ -1269,11 +1270,13 @@ impl<'db> Specialization<'db> {
     ) -> ConstraintSet<'db, 'c> {
         let relation_visitor = HasRelationToVisitor::default(constraints);
         let disjointness_visitor = IsDisjointVisitor::default(constraints);
+        let protocol_relation_visitor = ProtocolRelationVisitor::default(constraints);
         let checker = DisjointnessChecker::new(
             constraints,
             inferable,
             &relation_visitor,
             &disjointness_visitor,
+            &protocol_relation_visitor,
         );
         checker.check_specialization_pair(db, self, other)
     }
