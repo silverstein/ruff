@@ -3326,36 +3326,31 @@ python-version = "3.12"
 ```
 
 ```py
-from abc import ABC, abstractmethod
-from dataclasses import dataclass
 from typing import Protocol
 
-class Base[I, O](ABC):
-    @abstractmethod
-    async def run(self, input: I) -> O: ...
-
-class BaseFactory[I, O](Protocol):
-    async def create(self) -> Base[I, O]: ...
-
-class Impl[I, O](Base[I, O]):
-    async def run(self, input: I) -> O:
+class Base[I, O]:
+    def run(self, input: I) -> O:
         raise NotImplementedError
 
-class Tagged[T, U, V]: ...
+class Impl[I, O](Base[I, O]):
+    def run(self, input: I) -> O:
+        raise NotImplementedError
+
+class Tagged[T]: ...
 class Wrapped[T]: ...
 
-class Factory[I, O](BaseFactory[I, O], Protocol):
-    async def create(self) -> Impl[I, O]: ...
-    def tag[U, V](self) -> "Factory[Tagged[I, U, V], O]":
-        return TaggedFactory(inner=self)
+class Factory[I, O](Protocol):
+    def create(self) -> Base[I, O]: ...
+    def tag(self) -> "Factory[Tagged[I], O]":
+        return TaggedFactory(self)
 
     def wrap(self) -> "Factory[Wrapped[I], O]": ...
 
-@dataclass
-class TaggedFactory[I, O, U, V](Factory["Tagged[I, U, V]", O]):
-    inner: Factory[I, O]
+class TaggedFactory[I, O](Factory[Tagged[I], O]):
+    def __init__(self, inner: Factory[I, O]):
+        pass
 
-    async def create(self) -> Impl["Tagged[I, U, V]", O]:
+    def create(self) -> Impl[Tagged[I], O]:
         raise NotImplementedError
 ```
 
