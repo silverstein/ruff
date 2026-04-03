@@ -452,69 +452,70 @@ impl<'c, 'db> TypeRelationChecker<'_, 'c, 'db> {
         ty: Type<'db>,
         protocol: ProtocolInstanceType<'db>,
     ) -> ConstraintSet<'db, 'c> {
-        self.with_protocol_recursion_guard(db, ty, protocol, || {
-            // `ty` might satisfy the protocol nominally, if `protocol` is a class-based protocol and
-            // `ty` has the protocol class in its MRO. This is a much cheaper check than the
-            // structural check we perform below, so we do it first to avoid the structural check when
-            // we can.
-            let mut result = self.never();
+        // `ty` might satisfy the protocol nominally, if `protocol` is a class-based protocol and
+        // `ty` has the protocol class in its MRO. This is a much cheaper check than the
+        // structural check we perform below, so we do it first to avoid the structural check when
+        // we can.
+        let mut result = self.never();
 
-            if let Some(nominal_instance) = protocol.to_nominal_instance() {
-                // if `ty` and `protocol` are *both* protocols, we also need to treat `ty` as if it
-                // were a nominal type, or we won't consider a protocol `P` that explicitly inherits
-                // from a protocol `Q` to be a subtype of `Q` to be a subtype of `Q` if it overrides
-                // `Q`'s members in a Liskov-incompatible way.
-                let type_to_test = ty
-                    .as_protocol_instance()
-                    .and_then(ProtocolInstanceType::to_nominal_instance)
-                    .map(Type::NominalInstance)
-                    .unwrap_or(ty);
+        if let Some(nominal_instance) = protocol.to_nominal_instance() {
+            // if `ty` and `protocol` are *both* protocols, we also need to treat `ty` as if it
+            // were a nominal type, or we won't consider a protocol `P` that explicitly inherits
+            // from a protocol `Q` to be a subtype of `Q` to be a subtype of `Q` if it overrides
+            // `Q`'s members in a Liskov-incompatible way.
+            let type_to_test = ty
+                .as_protocol_instance()
+                .and_then(ProtocolInstanceType::to_nominal_instance)
+                .map(Type::NominalInstance)
+                .unwrap_or(ty);
 
-                let nominally_satisfied =
-                    self.check_type_pair(db, type_to_test, Type::NominalInstance(nominal_instance));
+            let nominally_satisfied =
+                self.check_type_pair(db, type_to_test, Type::NominalInstance(nominal_instance));
 
-                if result
-                    .union(db, self.constraints, nominally_satisfied)
-                    .is_always_satisfied(db)
-                {
-                    return result;
-                }
-            }
-
-            // `Generator` special case: Prior to 3.13, the `_ReturnT_co` type didn't appear in any
-            // methods (except `__iter__`, but that returns the self type recursively, so it can't rule
-            // out assignability). We don't want generators with different return types to be
-            // assignable to each other. In this case we use the result of the nominal check above.
-            if let Some(source_protocol) = ty.as_protocol_instance()
-                && let Protocol::FromClass(source_class) = source_protocol.inner
-                && let Protocol::FromClass(proto_class) = protocol.inner
-                && source_class.is_known(db, KnownClass::Generator)
-                && proto_class.is_known(db, KnownClass::Generator)
-                && Program::get(db).python_version(db) < PythonVersion::PY313
+            if result
+                .union(db, self.constraints, nominally_satisfied)
+                .is_always_satisfied(db)
             {
                 return result;
             }
+        }
 
-            if !has_all_protocol_members_defined(db, ty, protocol) {
-                return result;
-            }
+        // `Generator` special case: Prior to 3.13, the `_ReturnT_co` type didn't appear in any
+        // methods (except `__iter__`, but that returns the self type recursively, so it can't rule
+        // out assignability). We don't want generators with different return types to be
+        // assignable to each other. In this case we use the result of the nominal check above.
+        if let Some(source_protocol) = ty.as_protocol_instance()
+            && let Protocol::FromClass(source_class) = source_protocol.inner
+            && let Protocol::FromClass(proto_class) = protocol.inner
+            && source_class.is_known(db, KnownClass::Generator)
+            && proto_class.is_known(db, KnownClass::Generator)
+            && Program::get(db).python_version(db) < PythonVersion::PY313
+        {
+            return result;
+        }
 
-            let structurally_satisfied =
-                if let Type::ProtocolInstance(source_protocol) = ty {
-                    self.check_protocol_interface_pair(
-                        db,
-                        source_protocol.interface(db),
-                        protocol.interface(db),
-                    )
-                } else {
-                    protocol.inner.interface(db).members(db).when_all(
-                        db,
-                        self.constraints,
-                        |member| self.type_satisfies_protocol_member(db, ty, &member),
-                    )
-                };
-            result.or(db, self.constraints, || structurally_satisfied)
-        })
+        if !has_all_protocol_members_defined(db, ty, protocol) {
+            return result;
+        }
+
+        let structurally_satisfied = if let Type::ProtocolInstance(source_protocol) = ty {
+            self.with_protocol_recursion_guard(db, ty, protocol, || {
+                self.check_protocol_interface_pair(
+                    db,
+                    source_protocol.interface(db),
+                    protocol.interface(db),
+                )
+            })
+        } else {
+            protocol
+                .inner
+                .interface(db)
+                .members(db)
+                .when_all(db, self.constraints, |member| {
+                    self.type_satisfies_protocol_member(db, ty, &member)
+                })
+        };
+        result.or(db, self.constraints, || structurally_satisfied)
     }
 
     pub(super) fn check_nominal_instance_pair(

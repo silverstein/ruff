@@ -2654,7 +2654,7 @@ impl<'db> CallableBinding<'db> {
     fn filter_overloads_using_any_or_unknown(
         &mut self,
         db: &'db dyn Db,
-        constraints: &ConstraintSetBuilder<'db>,
+        _constraints: &ConstraintSetBuilder<'db>,
         arguments: &CallArguments<'_, 'db>,
         matching_overload_indexes: &[usize],
     ) {
@@ -2687,10 +2687,9 @@ impl<'db> CallableBinding<'db> {
                         overload.signature.parameters()[parameter_index].annotated_type();
                     let first_parameter_type = &mut first_parameter_types[parameter_index];
                     if let Some(first_parameter_type) = first_parameter_type {
-                        if !first_parameter_type
-                            .when_equivalent_to(db, current_parameter_type, constraints)
-                            .is_always_satisfied(db)
-                        {
+                        // Step 5 must compare the overload declarations themselves, not whether
+                        // the current call's inferred constraints can make them look equivalent.
+                        if !first_parameter_type.is_equivalent_to(db, current_parameter_type) {
                             participating_parameter_indexes.insert(parameter_index);
                         }
                     } else {
@@ -2847,8 +2846,7 @@ impl<'db> CallableBinding<'db> {
                 matching_overloads.all(|(_, overload)| {
                     overload
                         .return_type()
-                        .when_equivalent_to(db, first_overload_return_type, constraints)
-                        .is_always_satisfied(db)
+                        .is_equivalent_to(db, first_overload_return_type)
                 })
             } else {
                 // No matching overload

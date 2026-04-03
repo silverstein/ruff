@@ -321,7 +321,6 @@ impl<'db> Type<'db> {
         constraints: &'c ConstraintSetBuilder<'db>,
         inferable: InferableTypeVars<'db>,
     ) -> ConstraintSet<'db, 'c> {
-        let protocol_relation_visitor = ProtocolRelationVisitor::default(constraints);
         let checker = TypeRelationChecker {
             constraints,
             inferable,
@@ -329,7 +328,7 @@ impl<'db> Type<'db> {
             given: assuming,
             relation_visitor: &HasRelationToVisitor::default(constraints),
             disjointness_visitor: &IsDisjointVisitor::default(constraints),
-            protocol_relation_visitor: &protocol_relation_visitor,
+            protocol_relation_visitor: &ProtocolRelationVisitor::default(constraints),
         };
         checker.check_type_pair(db, self, target)
     }
@@ -421,7 +420,6 @@ impl<'db> Type<'db> {
         inferable: InferableTypeVars<'db>,
         relation: TypeRelation,
     ) -> ConstraintSet<'db, 'c> {
-        let protocol_relation_visitor = ProtocolRelationVisitor::default(constraints);
         let checker = TypeRelationChecker {
             constraints,
             inferable,
@@ -429,7 +427,7 @@ impl<'db> Type<'db> {
             given: ConstraintSet::from_bool(constraints, false),
             relation_visitor: &HasRelationToVisitor::default(constraints),
             disjointness_visitor: &IsDisjointVisitor::default(constraints),
-            protocol_relation_visitor: &protocol_relation_visitor,
+            protocol_relation_visitor: &ProtocolRelationVisitor::default(constraints),
         };
         checker.check_type_pair(db, self, target)
     }
@@ -457,13 +455,12 @@ impl<'db> Type<'db> {
         other: Type<'db>,
         constraints: &'c ConstraintSetBuilder<'db>,
     ) -> ConstraintSet<'db, 'c> {
-        let protocol_relation_visitor = ProtocolRelationVisitor::default(constraints);
         let checker = EquivalenceChecker {
             constraints,
             given: ConstraintSet::from_bool(constraints, false),
             relation_visitor: &HasRelationToVisitor::default(constraints),
             disjointness_visitor: &IsDisjointVisitor::default(constraints),
-            protocol_relation_visitor: &protocol_relation_visitor,
+            protocol_relation_visitor: &ProtocolRelationVisitor::default(constraints),
         };
         checker.check_type_pair(db, self, other)
     }
@@ -496,14 +493,13 @@ impl<'db> Type<'db> {
         constraints: &'c ConstraintSetBuilder<'db>,
         inferable: InferableTypeVars<'db>,
     ) -> ConstraintSet<'db, 'c> {
-        let protocol_relation_visitor = ProtocolRelationVisitor::default(constraints);
         let checker = DisjointnessChecker {
             constraints,
             inferable,
             given: ConstraintSet::from_bool(constraints, false),
             disjointness_visitor: &IsDisjointVisitor::default(constraints),
             relation_visitor: &HasRelationToVisitor::default(constraints),
-            protocol_relation_visitor: &protocol_relation_visitor,
+            protocol_relation_visitor: &ProtocolRelationVisitor::default(constraints),
         };
         checker.check_type_pair(db, self, other)
     }
