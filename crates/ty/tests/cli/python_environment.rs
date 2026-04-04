@@ -1180,6 +1180,27 @@ fn config_file_unsupported_python_version() -> anyhow::Result<()> {
 }
 
 #[test]
+fn cli_unsupported_python_version() -> anyhow::Result<()> {
+    let case = CliTest::with_file("test.py", "")?;
+
+    assert_cmd_snapshot!(case.command().arg("--python-version=2.7"), @"
+    success: false
+    exit_code: 2
+    ----- stdout -----
+
+    ----- stderr -----
+    error: invalid value '2.7' for '--python-version <VERSION>'
+      [possible values: 3.7, 3.8, 3.9, 3.10, 3.11, 3.12, 3.13, 3.14, 3.15]
+
+      tip: a similar value exists: '3.7'
+
+    For more information, try '--help'.
+    ");
+
+    Ok(())
+}
+
+#[test]
 fn config_file_python_setting_directory_with_no_site_packages() -> anyhow::Result<()> {
     let case = CliTest::with_files([
         (

@@ -16,6 +16,7 @@ use options::TyTomlError;
 mod configuration_file;
 pub mod options;
 pub mod pyproject;
+pub mod python_version;
 pub mod settings;
 pub mod value;
 
@@ -742,8 +743,9 @@ unclosed table, expected `]`
                 .environment
                 .unwrap_or_default()
                 .python_version
-                .as_deref(),
-            Some(&PythonVersion::PY312)
+                .as_ref()
+                .map(|python_version| **python_version),
+            Some(PythonVersion::PY312)
         );
 
         Ok(())
@@ -772,8 +774,9 @@ unclosed table, expected `]`
                 .environment
                 .unwrap_or_default()
                 .python_version
-                .as_deref(),
-            Some(&PythonVersion::PY37)
+                .as_ref()
+                .map(|python_version| **python_version),
+            Some(PythonVersion::PY37)
         );
 
         Ok(())
@@ -804,8 +807,9 @@ unclosed table, expected `]`
                 .environment
                 .unwrap_or_default()
                 .python_version
-                .as_deref(),
-            Some(&PythonVersion::PY312)
+                .as_ref()
+                .map(|python_version| **python_version),
+            Some(PythonVersion::PY312)
         );
 
         Ok(())
@@ -834,8 +838,9 @@ unclosed table, expected `]`
                 .environment
                 .unwrap_or_default()
                 .python_version
-                .as_deref(),
-            Some(&PythonVersion::PY313)
+                .as_ref()
+                .map(|python_version| **python_version),
+            Some(PythonVersion::PY313)
         );
 
         Ok(())
@@ -866,8 +871,9 @@ unclosed table, expected `]`
                 .environment
                 .unwrap_or_default()
                 .python_version
-                .as_deref(),
-            Some(&PythonVersion::PY312)
+                .as_ref()
+                .map(|python_version| **python_version),
+            Some(PythonVersion::PY312)
         );
 
         Ok(())
@@ -900,8 +906,9 @@ unclosed table, expected `]`
                 .environment
                 .unwrap_or_default()
                 .python_version
-                .as_deref(),
-            Some(&PythonVersion::PY310)
+                .as_ref()
+                .map(|python_version| **python_version),
+            Some(PythonVersion::PY310)
         );
 
         Ok(())
@@ -1020,8 +1027,9 @@ unclosed table, expected `]`
                 .environment
                 .unwrap_or_default()
                 .python_version
-                .as_deref(),
-            Some(&PythonVersion::PY37)
+                .as_ref()
+                .map(|python_version| **python_version),
+            Some(PythonVersion::PY37)
         );
 
         Ok(())

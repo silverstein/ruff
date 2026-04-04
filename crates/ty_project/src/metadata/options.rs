@@ -1,5 +1,8 @@
 use crate::Db;
 use crate::glob::{ExcludeFilter, IncludeExcludeFilter, IncludeFilter, PortableGlobKind};
+#[cfg(feature = "schemars")]
+use crate::metadata::python_version::SupportedPythonVersion;
+use crate::metadata::python_version::deserialize_supported_python_version;
 use crate::metadata::settings::{OverrideSettings, SrcSettings};
 
 use super::settings::{Override, Settings, TerminalSettings};
@@ -20,7 +23,7 @@ use ruff_macros::{Combine, OptionsMetadata, RustDoc};
 use ruff_options_metadata::{OptionSet, OptionsMetadata, Visit};
 use ruff_python_ast::PythonVersion;
 use rustc_hash::FxHasher;
-use serde::{Deserialize, Deserializer, Serialize};
+use serde::{Deserialize, Serialize};
 use std::borrow::Cow;
 use std::cmp::Ordering;
 use std::fmt::{self, Debug, Display};
@@ -542,29 +545,6 @@ impl Options {
     }
 }
 
-fn deserialize_supported_python_version<'de, D>(
-    deserializer: D,
-) -> Result<Option<RangedValue<PythonVersion>>, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    let python_version = Option::<RangedValue<PythonVersion>>::deserialize(deserializer)?;
-
-    if let Some(python_version) = &python_version
-        && !PythonVersion::iter().any(|supported_version| supported_version == **python_version)
-    {
-        return Err(serde::de::Error::custom(format!(
-            "unsupported value `{python_version}` for `python-version`; expected one of {}",
-            PythonVersion::iter()
-                .map(|version| format!("`{version}`"))
-                .collect::<Vec<_>>()
-                .join(", ")
-        )));
-    }
-
-    Ok(python_version)
-}
-
 /// Return the site-packages from the environment ty is installed in, as derived from ty's
 /// executable.
 ///
@@ -647,7 +627,7 @@ pub struct EnvironmentOptions {
 
     /// Specifies the version of Python that will be used to analyze the source code.
     /// The version should be specified as a string in the format `M.m` where `M` is the major version
-    /// and `m` is the minor (e.g. `"3.0"` or `"3.6"`).
+    /// and `m` is the minor (e.g. `"3.7"` or `"3.12"`).
     /// If a version is provided, ty will generate errors if the source code makes use of language features
     /// that are not supported in that version.
     ///
@@ -667,9 +647,13 @@ pub struct EnvironmentOptions {
         skip_serializing_if = "Option::is_none",
         deserialize_with = "deserialize_supported_python_version"
     )]
+    #[cfg_attr(
+        feature = "schemars",
+        schemars(with = "Option<SupportedPythonVersion>")
+    )]
     #[option(
         default = r#""3.14""#,
-        value_type = r#""3.7" | "3.8" | "3.9" | "3.10" | "3.11" | "3.12" | "3.13" | "3.14" | <major>.<minor>"#,
+        value_type = r#""3.7" | "3.8" | "3.9" | "3.10" | "3.11" | "3.12" | "3.13" | "3.14" | "3.15""#,
         example = r#"
             python-version = "3.12"
         "#
