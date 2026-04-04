@@ -580,17 +580,17 @@ pub(crate) struct PossiblyNarrowedPlacesBuilder<'db, 'a> {
 }
 
 impl<'db, 'a> PossiblyNarrowedPlacesBuilder<'db, 'a> {
-    pub fn new(db: &'db dyn Db, places: &'a PlaceTableBuilder) -> Self {
+    pub(crate) fn new(db: &'db dyn Db, places: &'a PlaceTableBuilder) -> Self {
         Self { db, places }
     }
 
     /// Compute possibly narrowed places for an expression predicate.
-    pub fn expression(self, expr: &ast::Expr) -> PossiblyNarrowedPlaces {
+    pub(crate) fn expression(self, expr: &ast::Expr) -> PossiblyNarrowedPlaces {
         self.expression_node(expr)
     }
 
     /// Compute possibly narrowed places for a pattern predicate.
-    pub fn pattern(
+    pub(crate) fn pattern(
         self,
         pattern: PatternPredicate<'db>,
         module: &ParsedModuleRef,

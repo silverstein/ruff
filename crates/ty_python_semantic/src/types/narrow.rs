@@ -14,8 +14,7 @@ use crate::types::{
     Truthiness, Type, TypeContext, TypeVarBoundOrConstraints, UnionBuilder, infer_expression_types,
 };
 use ty_semantic_index::expression::Expression;
-use ty_semantic_index::narrowing_constraints::ConstraintKey;
-use ty_semantic_index::place::{PlaceExpr, PlaceTable, PlaceTableBuilder, ScopedPlaceId};
+use ty_semantic_index::place::{PlaceExpr, PlaceTable, ScopedPlaceId};
 use ty_semantic_index::predicate::{
     CallableAndCallExpr, ClassPatternKind, PatternPredicate, PatternPredicateKind, Predicate,
     PredicateNode,
@@ -31,7 +30,7 @@ use super::UnionType;
 use itertools::Itertools;
 use ruff_python_ast as ast;
 use ruff_python_ast::{BoolOp, ExprBoolOp};
-use rustc_hash::{FxHashMap, FxHashSet};
+use rustc_hash::FxHashMap;
 use smallvec::{SmallVec, smallvec, smallvec_inline};
 use std::collections::hash_map::Entry;
 
@@ -2199,7 +2198,7 @@ fn all_matching_tuple_elements_have_literal_types<'db>(
 
 pub(crate) fn evaluate_narrowing_constraint<'db>(
     db: &'db dyn Db,
-    evaluator: NarrowingEvaluator<'_, 'db>,
+    evaluator: &NarrowingEvaluator<'_, 'db>,
     base_ty: Type<'db>,
     place: ScopedPlaceId,
 ) -> Type<'db> {

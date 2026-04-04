@@ -1,4 +1,4 @@
-use ruff_python_ast::{self as ast, HasNodeIndex};
+use ruff_python_ast as ast;
 use std::iter::{FusedIterator, once};
 use std::sync::Arc;
 
@@ -7,7 +7,6 @@ use ruff_db::parsed::parsed_module;
 use ruff_index::{IndexSlice, IndexVec};
 use ruff_python_ast::NodeIndex;
 use ruff_python_parser::semantic_errors::SemanticSyntaxError;
-use ruff_text_size::TextRange;
 use rustc_hash::{FxHashMap, FxHashSet};
 use salsa::Update;
 use salsa::plumbing::AsId;
@@ -378,7 +377,7 @@ impl<'db> SemanticIndex<'db> {
     }
 
     #[track_caller]
-    pub fn ast_ids(&self, scope_id: FileScopeId) -> &AstIds {
+    pub(crate) fn ast_ids(&self, scope_id: FileScopeId) -> &AstIds {
         &self.ast_ids[scope_id]
     }
 
@@ -471,13 +470,11 @@ impl<'db> SemanticIndex<'db> {
     }
 
     /// Returns an iterator over the descendent scopes of `scope`.
-    #[allow(unused)]
-    pub fn descendent_scopes(&self, scope: FileScopeId) -> DescendantsIter<'_> {
+    pub(crate) fn descendent_scopes(&self, scope: FileScopeId) -> DescendantsIter<'_> {
         DescendantsIter::new(&self.scopes, scope)
     }
 
     /// Returns an iterator over the direct child scopes of `scope`.
-    #[allow(unused)]
     pub fn child_scopes(&self, scope: FileScopeId) -> ChildrenIter<'_> {
         ChildrenIter::new(&self.scopes, scope)
     }
@@ -943,7 +940,7 @@ impl HasTrackedScope for ast::Identifier {}
 mod tests {
     use ruff_db::{files::system_path_to_file, parsed::ParsedModuleRef};
     use ruff_python_ast as ast;
-    use ruff_text_size::Ranged;
+    use ruff_text_size::{Ranged, TextRange};
 
     use super::*;
 

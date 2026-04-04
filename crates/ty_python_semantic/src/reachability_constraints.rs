@@ -193,8 +193,6 @@
 //! [Kleene]: <https://en.wikipedia.org/wiki/Three-valued_logic#Kleene_and_Priest_logics>
 //! [bdd]: https://en.wikipedia.org/wiki/Binary_decision_diagram
 
-use ruff_index::Idx;
-
 use crate::Db;
 use crate::dunder_all::dunder_all_names;
 use crate::place::{RequiresExplicitReExport, imported_symbol};

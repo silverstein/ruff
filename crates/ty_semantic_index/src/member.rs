@@ -19,24 +19,24 @@ pub struct Member {
 }
 
 impl Member {
-    pub fn new(expression: MemberExpr) -> Self {
+    pub(crate) fn new(expression: MemberExpr) -> Self {
         Self {
             expression,
             flags: MemberFlags::empty(),
         }
     }
 
-    pub fn expression(&self) -> &MemberExpr {
+    pub(crate) fn expression(&self) -> &MemberExpr {
         &self.expression
     }
 
     /// Is the place given a value in its containing scope?
-    pub const fn is_bound(&self) -> bool {
+    pub(crate) const fn is_bound(&self) -> bool {
         self.flags.contains(MemberFlags::IS_BOUND)
     }
 
     /// Is the place declared in its containing scope?
-    pub fn is_declared(&self) -> bool {
+    pub(crate) fn is_declared(&self) -> bool {
         self.flags.contains(MemberFlags::IS_DECLARED)
     }
 
@@ -189,7 +189,7 @@ impl MemberExpr {
     /// Returns the left most part of the member expression, e.g. `x` in `x.y.z`.
     ///
     /// This is the symbol on which the member access is performed.
-    pub fn symbol_name(&self) -> &str {
+    pub(crate) fn symbol_name(&self) -> &str {
         self.as_ref().symbol_name()
     }
 
@@ -197,7 +197,7 @@ impl MemberExpr {
         self.segments.len()
     }
 
-    pub fn as_ref(&self) -> MemberExprRef<'_> {
+    pub(crate) fn as_ref(&self) -> MemberExprRef<'_> {
         MemberExprRef {
             path: self.path.as_str(),
             segments: SegmentsRef::from(&self.segments),
@@ -435,7 +435,7 @@ impl MemberTable {
     /// ## Panics
     /// If the ID is not valid for this table.
     #[track_caller]
-    pub fn member(&self, id: ScopedMemberId) -> &Member {
+    pub(crate) fn member(&self, id: ScopedMemberId) -> &Member {
         &self.members[id]
     }
 
@@ -449,7 +449,7 @@ impl MemberTable {
     }
 
     /// Returns an iterator over all members in the table.
-    pub fn iter(&self) -> std::slice::Iter<'_, Member> {
+    pub(crate) fn iter(&self) -> std::slice::Iter<'_, Member> {
         self.members.iter()
     }
 
@@ -458,7 +458,7 @@ impl MemberTable {
     }
 
     /// Returns the ID of the member with the given expression, if it exists.
-    pub fn member_id<'a>(
+    pub(crate) fn member_id<'a>(
         &self,
         member: impl Into<MemberExprRef<'a>>,
     ) -> Option<ScopedMemberId> {
@@ -469,7 +469,7 @@ impl MemberTable {
             .copied()
     }
 
-    pub fn place_id_by_instance_attribute_name(&self, name: &str) -> Option<ScopedMemberId> {
+    pub(crate) fn place_id_by_instance_attribute_name(&self, name: &str) -> Option<ScopedMemberId> {
         for (id, member) in self.members.iter_enumerated() {
             if member.is_instance_attribute_named(name) {
                 return Some(id);

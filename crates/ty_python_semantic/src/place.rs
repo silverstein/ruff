@@ -1419,7 +1419,7 @@ fn place_from_bindings_impl<'db>(
             let binding_ty = binding_type(db, binding);
             Some(evaluate_narrowing_constraint(
                 db,
-                narrowing_constraint,
+                &narrowing_constraint,
                 binding_ty,
                 binding.place(db),
             ))

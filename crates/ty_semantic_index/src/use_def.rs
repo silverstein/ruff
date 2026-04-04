@@ -549,7 +549,7 @@ impl<'db> UseDefMap<'db> {
         self.bindings_iterator(bindings, BoundnessAnalysis::AssumeBound)
     }
 
-    pub fn enclosing_snapshot(
+    pub(crate) fn enclosing_snapshot(
         &self,
         snapshot_id: ScopedEnclosingSnapshotId,
         nested_laziness: ScopeLaziness,

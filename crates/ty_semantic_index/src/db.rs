@@ -39,7 +39,6 @@ pub(crate) mod tests {
         files: Files,
         system: TestSystem,
         vendored: VendoredFileSystem,
-        events: Events,
     }
 
     impl TestDb {
@@ -47,7 +46,6 @@ pub(crate) mod tests {
             let events = Events::default();
             Self {
                 storage: salsa::Storage::new(Some(Box::new({
-                    let events = events.clone();
                     move |event| {
                         tracing::trace!("event: {event:?}");
                         let mut events = events.lock().unwrap();
@@ -56,24 +54,8 @@ pub(crate) mod tests {
                 }))),
                 system: TestSystem::default(),
                 vendored: ty_vendored::file_system().clone(),
-                events,
                 files: Files::default(),
             }
-        }
-
-        /// Takes the salsa events.
-        pub(crate) fn take_salsa_events(&mut self) -> Vec<salsa::Event> {
-            let mut events = self.events.lock().unwrap();
-
-            std::mem::take(&mut *events)
-        }
-
-        /// Clears the salsa events.
-        ///
-        /// ## Panics
-        /// If there are any pending salsa snapshots.
-        pub(crate) fn clear_salsa_events(&mut self) {
-            self.take_salsa_events();
         }
     }
 
@@ -141,11 +123,6 @@ pub(crate) mod tests {
             }
         }
 
-        pub(crate) fn with_python_version(mut self, version: PythonVersion) -> Self {
-            self.python_version = version;
-            self
-        }
-
         pub(crate) fn with_file(
             mut self,
             path: &'a (impl AsRef<SystemPath> + ?Sized),
@@ -180,9 +157,5 @@ pub(crate) mod tests {
 
             Ok(db)
         }
-    }
-
-    pub(crate) fn setup_db() -> TestDb {
-        TestDbBuilder::new().build().expect("valid TestDb setup")
     }
 }

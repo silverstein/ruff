@@ -2015,7 +2015,7 @@ impl<'db> Bindings<'db> {
                     Type::ClassLiteral(class) => match class.known(db) {
                         Some(KnownClass::Bool) => match overload.parameter_types() {
                             [Some(arg)] => {
-                                overload.set_return_type(Type::from_truthiness(db, arg.bool(db)))
+                                overload.set_return_type(Type::from_truthiness(db, arg.bool(db)));
                             }
                             [None] => overload.set_return_type(Type::bool_literal(false)),
                             _ => {}

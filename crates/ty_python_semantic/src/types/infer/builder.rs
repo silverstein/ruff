@@ -1805,7 +1805,7 @@ impl<'db, 'ast> TypeInferenceBuilder<'db, 'ast> {
             let binding_ty = binding_type(db, reachable_binding.definition);
             let narrowed_ty = evaluate_narrowing_constraint(
                 db,
-                use_def.narrowing_evaluator(reachable_binding.narrowing_constraint),
+                &use_def.narrowing_evaluator(reachable_binding.narrowing_constraint),
                 binding_ty,
                 place,
             );
@@ -7659,7 +7659,7 @@ impl<'db, 'ast> TypeInferenceBuilder<'db, 'ast> {
                 self.index,
             ) {
                 ApplicableConstraints::UnboundBinding(constraint) => {
-                    ty = evaluate_narrowing_constraint(db, constraint, ty, place);
+                    ty = evaluate_narrowing_constraint(db, &constraint, ty, place);
                 }
                 // Performs narrowing based on constrained bindings.
                 // This handling must be performed even if narrowing is attempted and failed using `infer_place_load`.
@@ -7695,7 +7695,7 @@ impl<'db, 'ast> TypeInferenceBuilder<'db, 'ast> {
                                 let binding_ty = binding_type(db, definition);
                                 union = union.add(evaluate_narrowing_constraint(
                                     db,
-                                    binding.narrowing_constraint,
+                                    &binding.narrowing_constraint,
                                     binding_ty,
                                     place,
                                 ));
@@ -7703,7 +7703,7 @@ impl<'db, 'ast> TypeInferenceBuilder<'db, 'ast> {
                             DefinitionState::Undefined | DefinitionState::Deleted => {
                                 union = union.add(evaluate_narrowing_constraint(
                                     db,
-                                    binding.narrowing_constraint,
+                                    &binding.narrowing_constraint,
                                     ty,
                                     place,
                                 ));

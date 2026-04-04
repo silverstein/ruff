@@ -197,11 +197,11 @@ pub(crate) enum ScopeLaziness {
 }
 
 impl ScopeLaziness {
-    pub const fn is_eager(self) -> bool {
+    pub(crate) const fn is_eager(self) -> bool {
         matches!(self, ScopeLaziness::Eager)
     }
 
-    pub const fn is_lazy(self) -> bool {
+    pub(crate) const fn is_lazy(self) -> bool {
         matches!(self, ScopeLaziness::Lazy)
     }
 }
@@ -218,11 +218,11 @@ pub enum ScopeKind {
 }
 
 impl ScopeKind {
-    pub const fn is_eager(self) -> bool {
+    pub(crate) const fn is_eager(self) -> bool {
         self.laziness().is_eager()
     }
 
-    pub const fn laziness(self) -> ScopeLaziness {
+    pub(crate) const fn laziness(self) -> ScopeLaziness {
         match self {
             ScopeKind::Module
             | ScopeKind::Class
@@ -232,7 +232,7 @@ impl ScopeKind {
         }
     }
 
-    pub const fn visibility(self) -> ScopeVisibility {
+    pub(crate) const fn visibility(self) -> ScopeVisibility {
         match self {
             ScopeKind::Module | ScopeKind::Class => ScopeVisibility::Public,
             ScopeKind::TypeParams

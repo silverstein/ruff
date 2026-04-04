@@ -62,11 +62,11 @@ impl<'db> PredicatesBuilder<'db> {
     /// Adds a predicate. Note that we do not deduplicate predicates. If you add a `Predicate`
     /// more than once, you will get distinct `ScopedPredicateId`s for each one. (This lets you
     /// model predicates that might evaluate to different values at different points of execution.)
-    pub fn add_predicate(&mut self, predicate: Predicate<'db>) -> ScopedPredicateId {
+    pub(crate) fn add_predicate(&mut self, predicate: Predicate<'db>) -> ScopedPredicateId {
         self.predicates.push(predicate)
     }
 
-    pub fn build(mut self) -> Predicates<'db> {
+    pub(crate) fn build(mut self) -> Predicates<'db> {
         self.predicates.shrink_to_fit();
         self.predicates
     }
@@ -85,7 +85,7 @@ pub(crate) enum PredicateOrLiteral<'db> {
 }
 
 impl PredicateOrLiteral<'_> {
-    pub fn negated(self) -> Self {
+    pub(crate) fn negated(self) -> Self {
         match self {
             PredicateOrLiteral::Literal(value) => PredicateOrLiteral::Literal(!value),
             PredicateOrLiteral::Predicate(Predicate { node, is_positive }) => {

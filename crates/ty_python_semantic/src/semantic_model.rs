@@ -2,7 +2,7 @@ use ruff_db::files::{File, FilePath};
 use ruff_db::parsed::{parsed_module, parsed_string_annotation};
 use ruff_db::source::{line_index, source_text};
 use ruff_python_ast::{self as ast, ExprStringLiteral, ModExpression};
-use ruff_python_ast::{Expr, ExprRef, HasNodeIndex, name::Name};
+use ruff_python_ast::{Expr, ExprRef, name::Name};
 use ruff_python_parser::Parsed;
 use ruff_source_file::LineIndex;
 use rustc_hash::FxHashMap;

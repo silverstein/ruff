@@ -198,9 +198,7 @@ use rustc_hash::FxHashMap;
 use std::cmp::Ordering;
 
 use crate::{
-    Db, Truthiness,
-    narrowing_constraints::ConstraintKey,
-    predicate::{Predicates, ScopedPredicateId},
+    predicate::ScopedPredicateId,
     rank::RankBitBox,
 };
 

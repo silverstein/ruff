@@ -173,7 +173,7 @@ impl SymbolTable {
     /// ## Panics
     /// If the ID is not valid for this symbol table.
     #[track_caller]
-    pub fn symbol(&self, id: ScopedSymbolId) -> &Symbol {
+    pub(crate) fn symbol(&self, id: ScopedSymbolId) -> &Symbol {
         &self.symbols[id]
     }
 
@@ -182,19 +182,19 @@ impl SymbolTable {
     /// ## Panics
     /// If the ID is not valid for this symbol table.
     #[track_caller]
-    pub fn symbol_mut(&mut self, id: ScopedSymbolId) -> &mut Symbol {
+    pub(crate) fn symbol_mut(&mut self, id: ScopedSymbolId) -> &mut Symbol {
         &mut self.symbols[id]
     }
 
     /// Look up the ID of a symbol by its name.
-    pub fn symbol_id(&self, name: &str) -> Option<ScopedSymbolId> {
+    pub(crate) fn symbol_id(&self, name: &str) -> Option<ScopedSymbolId> {
         self.map
             .find(Self::hash_name(name), |id| self.symbols[*id].name == name)
             .copied()
     }
 
     /// Iterate over the symbols in this symbol table.
-    pub fn iter(&self) -> std::slice::Iter<'_, Symbol> {
+    pub(crate) fn iter(&self) -> std::slice::Iter<'_, Symbol> {
         self.symbols.iter()
     }
 
