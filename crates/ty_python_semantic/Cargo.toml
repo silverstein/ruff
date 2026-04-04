@@ -23,17 +23,14 @@ ruff_python_stdlib = { workspace = true }
 ruff_python_trivia = { workspace = true }
 ruff_source_file = { workspace = true }
 ruff_text_size = { workspace = true }
-ty_combine = { workspace = true }
 ty_module_resolver = { workspace = true }
 ty_site_packages = { workspace = true }
 ty_semantic_index = { workspace = true, features = ["serde", "testing"] }
 
 bitflags = { workspace = true }
-bitvec = { workspace = true }
 compact_str = { workspace = true }
 drop_bomb = { workspace = true }
 get-size2 = { workspace = true, features = ["indexmap", "ordermap"] }
-hashbrown = { workspace = true }
 indexmap = { workspace = true }
 itertools = { workspace = true }
 memchr = { workspace = true }

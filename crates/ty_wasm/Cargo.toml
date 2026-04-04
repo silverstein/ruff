@@ -30,7 +30,6 @@ ty_project = { workspace = true, default-features = false, features = [
     "deflate",
     "format",
 ] }
-ty_python_semantic = { workspace = true }
 ty_semantic_index = { workspace = true }
 
 ruff_db = { workspace = true, default-features = false, features = [] }
