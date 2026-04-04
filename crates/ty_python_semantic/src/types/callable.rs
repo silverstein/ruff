@@ -4,7 +4,6 @@ use smallvec::{SmallVec, smallvec_inline};
 use crate::{
     Db, FxOrderSet,
     place::Place,
-
     types::{
         ApplyTypeMappingVisitor, BoundTypeVarInstance, ClassType, FindLegacyTypeVarsVisitor,
         KnownInstanceType, LiteralValueTypeKind, MemberLookupPolicy, Parameter, Parameters,

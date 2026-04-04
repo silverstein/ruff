@@ -13,7 +13,6 @@ use crate::{
         known_instance::DeprecatedInstance,
     },
 };
-use ty_semantic_index::{SemanticIndex, Truthiness, scope::NodeWithScopeKind};
 use ruff_db::files::File;
 use ruff_python_ast as ast;
 use ruff_python_ast::PythonVersion;
@@ -23,6 +22,7 @@ use std::{
     sync::{LazyLock, Mutex},
 };
 use ty_module_resolver::{KnownModule, file_to_module};
+use ty_semantic_index::{SemanticIndex, Truthiness, scope::NodeWithScopeKind};
 
 /// Non-exhaustive enumeration of known classes (e.g. `builtins.int`, `typing.Any`, ...) to allow
 /// for easier syntax when interacting with very common classes.

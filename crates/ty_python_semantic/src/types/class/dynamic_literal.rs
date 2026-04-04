@@ -7,7 +7,7 @@ use ruff_text_size::{Ranged, TextRange};
 use crate::{
     Db, TypeQualifiers,
     place::{Place, PlaceAndQualifiers},
-        types::{
+    types::{
         ClassBase, ClassLiteral, ClassType, DataclassParams, KnownClass, MemberLookupPolicy,
         SubclassOfType, Type,
         class::{

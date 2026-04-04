@@ -196,11 +196,11 @@
 use crate::Db;
 use crate::dunder_all::dunder_all_names;
 use crate::place::{RequiresExplicitReExport, imported_symbol};
+use crate::types::narrow::accumulate_constraint;
 use crate::types::{
     CallableTypes, IntersectionBuilder, KnownClass, NarrowingConstraint, Type, TypeContext,
     UnionBuilder, UnionType, infer_expression_type, infer_narrowing_constraint,
 };
-use crate::types::narrow::accumulate_constraint;
 use ty_semantic_index::place::ScopedPlaceId;
 use ty_semantic_index::predicate::{
     CallableAndCallExpr, PatternPredicate, PatternPredicateKind, Predicate, PredicateNode,

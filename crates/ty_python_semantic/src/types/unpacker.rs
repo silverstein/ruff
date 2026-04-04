@@ -6,11 +6,11 @@ use rustc_hash::FxHashMap;
 use ruff_python_ast::{self as ast, AnyNodeRef};
 
 use crate::Db;
-use ty_semantic_index::ExpressionNodeKey;
-use ty_semantic_index::scope::ScopeId;
 use crate::types::infer::ExpressionInference;
 use crate::types::tuple::{ResizeTupleError, Tuple, TupleLength, TupleSpec, TupleUnpacker};
 use crate::types::{Type, TypeCheckDiagnostics, TypeContext, infer_expression_types};
+use ty_semantic_index::ExpressionNodeKey;
+use ty_semantic_index::scope::ScopeId;
 use ty_semantic_index::unpack::{UnpackKind, UnpackValue};
 
 use super::context::InferContext;

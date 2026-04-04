@@ -197,10 +197,7 @@ use ruff_index::{Idx, IndexVec};
 use rustc_hash::FxHashMap;
 use std::cmp::Ordering;
 
-use crate::{
-    predicate::ScopedPredicateId,
-    rank::RankBitBox,
-};
+use crate::{predicate::ScopedPredicateId, rank::RankBitBox};
 
 /// A ternary formula that defines under what conditions a binding is visible. (A ternary formula
 /// is just like a boolean formula, but with `Ambiguous` as a third potential result. See the

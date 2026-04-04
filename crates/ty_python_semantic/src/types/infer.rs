@@ -52,13 +52,13 @@ use crate::types::{
     ClassLiteral, KnownClass, StaticClassLiteral, Type, TypeAndQualifiers, TypeQualifiers,
     declaration_type,
 };
-use ty_semantic_index::unpack::Unpack;
 use builder::TypeInferenceBuilder;
 pub(super) use comparisons::UnsupportedComparisonError;
 use ty_semantic_index::ExpressionNodeKey;
 use ty_semantic_index::definition::Definition;
 use ty_semantic_index::expression::Expression;
 use ty_semantic_index::scope::ScopeId;
+use ty_semantic_index::unpack::Unpack;
 use ty_semantic_index::{SemanticIndex, semantic_index};
 
 mod builder;
