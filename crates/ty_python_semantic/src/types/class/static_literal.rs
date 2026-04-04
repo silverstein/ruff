@@ -11,18 +11,10 @@ use std::cell::RefCell;
 
 use crate::{
     Db, FxIndexMap, FxIndexSet, Program, TypeQualifiers,
+    index_utils::binding_reachability,
     place::{
         DefinedPlace, Definedness, Place, PlaceAndQualifiers, TypeOrigin, Widening,
         place_from_bindings, place_from_declarations,
-    },
-    semantic_index::{
-        DeclarationWithConstraint, attribute_assignments, attribute_declarations, attribute_scopes,
-        definition::{Definition, DefinitionKind, DefinitionState, TargetKind},
-        place_table,
-        scope::{Scope, ScopeId},
-        semantic_index,
-        symbol::Symbol,
-        use_def_map,
     },
     types::{
         ApplyTypeMappingVisitor, BoundTypeVarInstance, CallArguments, CallableType, ClassBase,
@@ -59,6 +51,15 @@ use crate::{
         variance::VarianceInferable,
         visitor::{TypeCollector, TypeVisitor, walk_type_with_recursion_guard},
     },
+};
+use ty_semantic_index::{
+    DeclarationWithConstraint, attribute_assignments, attribute_declarations, attribute_scopes,
+    definition::{Definition, DefinitionKind, DefinitionState, TargetKind},
+    place_table,
+    scope::{Scope, ScopeId},
+    semantic_index,
+    symbol::Symbol,
+    use_def_map,
 };
 
 /// Representation of a class definition statement in the AST: either a non-generic class, or a
@@ -2084,7 +2085,7 @@ impl<'db> StaticClassLiteral<'db> {
                         .reachable_symbol_bindings(method_place)
                         .find_map(|bind| {
                             (bind.binding.is_defined_and(|def| def == method))
-                                .then(|| class_map.binding_reachability(db, &bind))
+                                .then(|| binding_reachability(db, class_map, &bind))
                         })
                         .unwrap_or(Truthiness::AlwaysFalse)
                 } else {

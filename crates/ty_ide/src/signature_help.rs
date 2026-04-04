@@ -17,7 +17,7 @@ use ruff_python_ast::{self as ast, AnyNodeRef};
 use ruff_text_size::{Ranged, TextRange, TextSize};
 use ty_python_semantic::ResolvedDefinition;
 use ty_python_semantic::SemanticModel;
-use ty_python_semantic::semantic_index::definition::Definition;
+use ty_semantic_index::definition::Definition;
 use ty_python_semantic::types::ide_support::{
     CallSignatureDetails, call_signature_details, find_active_signature_from_details,
 };

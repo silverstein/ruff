@@ -12,15 +12,16 @@ use ruff_text_size::{Ranged, TextRange};
 use super::{Type, TypeCheckDiagnostics, infer_definition_types};
 
 use crate::diagnostic::DiagnosticGuard;
+use crate::index_utils::is_range_reachable;
 use crate::lint::LintSource;
-use crate::semantic_index::scope::ScopeId;
-use crate::semantic_index::semantic_index;
 use crate::types::function::FunctionDecorators;
 use crate::{
     Db,
     lint::{LintId, LintMetadata},
     suppression::suppressions,
 };
+use ty_semantic_index::scope::ScopeId;
+use ty_semantic_index::semantic_index;
 
 /// Context for inferring the types of a single file.
 ///
@@ -202,7 +203,7 @@ impl<'db, 'ast> InferContext<'db, 'ast> {
     fn is_range_reachable(&self, range: TextRange) -> bool {
         let index = semantic_index(self.db, self.file);
         let scope_id = self.scope.file_scope_id(self.db);
-        index.is_range_reachable(self.db, scope_id, range)
+        is_range_reachable(self.db, index, scope_id, range)
     }
 
     /// Are we currently inferring types in a stub file?

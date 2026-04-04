@@ -13,7 +13,7 @@ use super::{
     SubclassOfType, Type, TypeVarVariance,
 };
 use crate::place::PlaceAndQualifiers;
-use crate::semantic_index::definition::Definition;
+use ty_semantic_index::definition::Definition;
 use crate::types::constraints::{
     ConstraintSet, ConstraintSetBuilder, IteratorConstraintsExtension,
 };
@@ -847,7 +847,7 @@ impl<'db> VarianceInferable<'db> for Protocol<'db> {
 }
 
 mod synthesized_protocol {
-    use crate::semantic_index::definition::Definition;
+    use ty_semantic_index::definition::Definition;
     use crate::types::protocol_class::ProtocolInterface;
     use crate::types::{
         ApplyTypeMappingVisitor, BoundTypeVarInstance, FindLegacyTypeVarsVisitor, Type,

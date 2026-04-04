@@ -22,9 +22,10 @@ use ty_module_resolver::{
 };
 use ty_python_semantic::pull_types::pull_types;
 use ty_python_semantic::types::{UNDEFINED_REVEAL, check_types};
-use ty_python_semantic::{
-    FallibleStrategy, Program, ProgramSettings, PythonEnvironment, PythonPlatform,
-    PythonVersionSource, PythonVersionWithSource, SysPrefixPathOrigin,
+use ty_semantic_index::program::{FallibleStrategy, Program, ProgramSettings};
+use ty_semantic_index::python_platform::PythonPlatform;
+use ty_site_packages::{
+    PythonEnvironment, PythonVersionSource, PythonVersionWithSource, SysPrefixPathOrigin,
 };
 
 mod assertion;

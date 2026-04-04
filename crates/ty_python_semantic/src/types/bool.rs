@@ -5,12 +5,13 @@ use crate::{
     Db,
     types::{
         CallArguments, CallDunderError, ClassType, CycleDetector, KnownClass, KnownInstanceType,
-        LiteralValueTypeKind, SubclassOfInner, Truthiness, Type, TypeContext,
+        LiteralValueTypeKind, SubclassOfInner, Type, TypeContext,
         TypeVarBoundOrConstraints, UnionType, call::CallErrorKind,
         constraints::ConstraintSetBuilder, context::InferContext,
         diagnostic::UNSUPPORTED_BOOL_CONVERSION, typed_dict::TypedDictField,
     },
 };
+use ty_semantic_index::Truthiness;
 
 impl<'db> Type<'db> {
     /// Resolves the boolean value of the type and falls back to [`Truthiness::Ambiguous`] if the type doesn't implement `__bool__` correctly.

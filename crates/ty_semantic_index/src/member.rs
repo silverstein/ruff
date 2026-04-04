@@ -13,30 +13,30 @@ use std::ops::{Deref, DerefMut};
 
 /// A member access, e.g. `x.y` or `x[1]` or `x["foo"]`.
 #[derive(Clone, Debug, PartialEq, Eq, get_size2::GetSize)]
-pub(crate) struct Member {
+pub struct Member {
     expression: MemberExpr,
     flags: MemberFlags,
 }
 
 impl Member {
-    pub(crate) fn new(expression: MemberExpr) -> Self {
+    pub fn new(expression: MemberExpr) -> Self {
         Self {
             expression,
             flags: MemberFlags::empty(),
         }
     }
 
-    pub(crate) fn expression(&self) -> &MemberExpr {
+    pub fn expression(&self) -> &MemberExpr {
         &self.expression
     }
 
     /// Is the place given a value in its containing scope?
-    pub(crate) const fn is_bound(&self) -> bool {
+    pub const fn is_bound(&self) -> bool {
         self.flags.contains(MemberFlags::IS_BOUND)
     }
 
     /// Is the place declared in its containing scope?
-    pub(crate) fn is_declared(&self) -> bool {
+    pub fn is_declared(&self) -> bool {
         self.flags.contains(MemberFlags::IS_DECLARED)
     }
 
@@ -53,7 +53,7 @@ impl Member {
     }
 
     /// Is the place an instance attribute?
-    pub(crate) fn is_instance_attribute(&self) -> bool {
+    pub fn is_instance_attribute(&self) -> bool {
         let is_instance_attribute = self.flags.contains(MemberFlags::IS_INSTANCE_ATTRIBUTE);
         if is_instance_attribute {
             debug_assert!(self.is_instance_attribute_candidate());
@@ -105,7 +105,7 @@ impl Member {
     }
 
     /// Return `Some(<ATTRIBUTE>)` if the place expression is an instance attribute.
-    pub(crate) fn as_instance_attribute(&self) -> Option<&str> {
+    pub fn as_instance_attribute(&self) -> Option<&str> {
         if self.is_instance_attribute() {
             debug_assert!(self.as_instance_attribute_candidate().is_some());
             self.as_instance_attribute_candidate()
@@ -189,7 +189,7 @@ impl MemberExpr {
     /// Returns the left most part of the member expression, e.g. `x` in `x.y.z`.
     ///
     /// This is the symbol on which the member access is performed.
-    pub(crate) fn symbol_name(&self) -> &str {
+    pub fn symbol_name(&self) -> &str {
         self.as_ref().symbol_name()
     }
 
@@ -197,7 +197,7 @@ impl MemberExpr {
         self.segments.len()
     }
 
-    pub(crate) fn as_ref(&self) -> MemberExprRef<'_> {
+    pub fn as_ref(&self) -> MemberExprRef<'_> {
         MemberExprRef {
             path: self.path.as_str(),
             segments: SegmentsRef::from(&self.segments),
@@ -435,7 +435,7 @@ impl MemberTable {
     /// ## Panics
     /// If the ID is not valid for this table.
     #[track_caller]
-    pub(crate) fn member(&self, id: ScopedMemberId) -> &Member {
+    pub fn member(&self, id: ScopedMemberId) -> &Member {
         &self.members[id]
     }
 
@@ -449,7 +449,7 @@ impl MemberTable {
     }
 
     /// Returns an iterator over all members in the table.
-    pub(crate) fn iter(&self) -> std::slice::Iter<'_, Member> {
+    pub fn iter(&self) -> std::slice::Iter<'_, Member> {
         self.members.iter()
     }
 
@@ -458,7 +458,7 @@ impl MemberTable {
     }
 
     /// Returns the ID of the member with the given expression, if it exists.
-    pub(crate) fn member_id<'a>(
+    pub fn member_id<'a>(
         &self,
         member: impl Into<MemberExprRef<'a>>,
     ) -> Option<ScopedMemberId> {
@@ -469,7 +469,7 @@ impl MemberTable {
             .copied()
     }
 
-    pub(crate) fn place_id_by_instance_attribute_name(&self, name: &str) -> Option<ScopedMemberId> {
+    pub fn place_id_by_instance_attribute_name(&self, name: &str) -> Option<ScopedMemberId> {
         for (id, member) in self.members.iter_enumerated() {
             if member.is_instance_attribute_named(name) {
                 return Some(id);

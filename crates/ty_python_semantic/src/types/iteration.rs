@@ -1,8 +1,8 @@
 use crate::{
     Db,
     types::{
-        AwaitError, Bindings, CallArguments, CallDunderError, EvaluationMode, KnownClass,
-        LintDiagnosticGuard, LintDiagnosticGuardBuilder, LiteralValueTypeKind, Type, TypeContext,
+        AwaitError, Bindings, CallArguments, CallDunderError, KnownClass, LintDiagnosticGuard,
+        LintDiagnosticGuardBuilder, LiteralValueTypeKind, Type, TypeContext,
         TypeVarBoundOrConstraints, UnionType,
         call::CallErrorKind,
         context::InferContext,
@@ -13,6 +13,7 @@ use crate::{
 };
 use ruff_python_ast as ast;
 use std::borrow::Cow;
+use ty_semantic_index::EvaluationMode;
 
 impl<'db> Type<'db> {
     /// Returns a tuple spec describing the elements that are produced when iterating over `self`.

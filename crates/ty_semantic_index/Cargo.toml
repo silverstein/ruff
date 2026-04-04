@@ -1,5 +1,5 @@
 [package]
-name = "ty_python_semantic"
+name = "ty_semantic_index"
 version = "0.0.0"
 publish = false
 authors = { workspace = true }
@@ -25,8 +25,8 @@ ruff_source_file = { workspace = true }
 ruff_text_size = { workspace = true }
 ty_combine = { workspace = true }
 ty_module_resolver = { workspace = true }
+ty_vendored = { workspace = true }
 ty_site_packages = { workspace = true }
-ty_semantic_index = { workspace = true, features = ["serde", "testing"] }
 
 bitflags = { workspace = true }
 bitvec = { workspace = true }
@@ -55,8 +55,6 @@ ruff_db = { workspace = true, features = ["testing", "os"] }
 ruff_python_parser = { workspace = true }
 test-case = { workspace = true }
 ty_static = { workspace = true }
-ty_test = { workspace = true }
-ty_vendored = { workspace = true }
 
 anyhow = { workspace = true }
 camino = { workspace = true }
@@ -72,10 +70,6 @@ quickcheck_macros = { workspace = true }
 schemars = ["dep:schemars", "dep:serde_json"]
 serde = ["ruff_db/serde", "dep:serde", "ruff_python_ast/serde"]
 testing = []
-
-[[test]]
-name = "mdtest"
-harness = false
 
 [lints]
 workspace = true

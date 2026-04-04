@@ -7,8 +7,7 @@ use ruff_text_size::{Ranged, TextRange};
 use crate::{
     Db, TypeQualifiers,
     place::{Place, PlaceAndQualifiers},
-    semantic_index::{definition::Definition, scope::ScopeId},
-    types::{
+        types::{
         ClassBase, ClassLiteral, ClassType, DataclassParams, KnownClass, MemberLookupPolicy,
         SubclassOfType, Type,
         class::{
@@ -19,6 +18,7 @@ use crate::{
         mro::{DynamicMroError, Mro, MroIterator},
     },
 };
+use ty_semantic_index::{definition::Definition, scope::ScopeId};
 
 /// A class created dynamically via a three-argument `type()` call.
 ///

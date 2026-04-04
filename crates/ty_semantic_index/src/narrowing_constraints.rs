@@ -12,18 +12,18 @@
 //!
 //! [`Predicate`]: crate::semantic_index::predicate::Predicate
 
-use crate::semantic_index::ast_ids::ScopedUseId;
-use crate::semantic_index::reachability_constraints::ScopedReachabilityConstraintId;
-use crate::semantic_index::scope::FileScopeId;
+use crate::ast_ids::ScopedUseId;
+use crate::reachability_constraints::ScopedReachabilityConstraintId;
+use crate::scope::FileScopeId;
 
 /// A narrowing constraint associated with a live binding.
 ///
 /// This is a TDD node ID in the shared reachability constraints graph.
 /// `ALWAYS_TRUE` means "no narrowing constraint" (the base type is unchanged).
-pub(crate) type ScopedNarrowingConstraint = ScopedReachabilityConstraintId;
+pub type ScopedNarrowingConstraint = ScopedReachabilityConstraintId;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) enum ConstraintKey {
+pub enum ConstraintKey {
     NarrowingConstraint(ScopedNarrowingConstraint),
     NestedScope(FileScopeId),
     UseId(ScopedUseId),

@@ -1,10 +1,9 @@
 use crate::{
     Db, Program,
     place::{DefinedPlace, Definedness, Place, known_module_symbol},
-    semantic_index::{SemanticIndex, scope::NodeWithScopeKind},
     types::{
         Binding, ClassLiteral, ClassType, GenericContext, KnownInstanceType, StaticClassLiteral,
-        SubclassOfType, Truthiness, Type, binding_type,
+        SubclassOfType, Type, binding_type,
         bound_super::{BoundSuperError, BoundSuperType},
         class::CodeGeneratorKind,
         constraints::{ConstraintSet, ConstraintSetBuilder},
@@ -14,6 +13,7 @@ use crate::{
         known_instance::DeprecatedInstance,
     },
 };
+use ty_semantic_index::{SemanticIndex, Truthiness, scope::NodeWithScopeKind};
 use ruff_db::files::File;
 use ruff_python_ast as ast;
 use ruff_python_ast::PythonVersion;

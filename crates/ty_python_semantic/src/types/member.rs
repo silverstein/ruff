@@ -3,7 +3,7 @@ use crate::place::{
     ConsideredDefinitions, DefinedPlace, Place, PlaceAndQualifiers, RequiresExplicitReExport,
     place_by_id, place_from_bindings,
 };
-use crate::semantic_index::{place_table, scope::ScopeId, use_def_map};
+use ty_semantic_index::{place_table, scope::ScopeId, use_def_map};
 use crate::types::Type;
 
 /// The return type of certain member-lookup operations. Contains information

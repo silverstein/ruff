@@ -19,9 +19,9 @@ use ty_module_resolver::file_to_module;
 
 use crate::Db;
 use crate::place::{DefinedPlace, Place};
-use crate::semantic_index::definition::Definition;
-use crate::semantic_index::scope::{FileScopeId, ScopeKind};
-use crate::semantic_index::semantic_index;
+use ty_semantic_index::definition::Definition;
+use ty_semantic_index::scope::{FileScopeId, ScopeKind};
+use ty_semantic_index::semantic_index;
 use crate::types::callable::CallableTypeKind;
 use crate::types::class::{ClassLiteral, ClassType, GenericAlias};
 use crate::types::constraints::ConstraintSetBuilder;
